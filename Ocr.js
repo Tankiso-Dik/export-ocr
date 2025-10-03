@@ -47,25 +47,20 @@ function Ocr() {
     };
 
     return (
-        <div className="container">
-            <h1>OCR Application</h1>
+        <>
+            {error && <p className="error">{error}</p>}
 
-            <div className="upload-section">
-                <input type="file" accept="image/*,application/pdf" onChange={handleFileChange} />
+            <div className="bottom-ui-container">
+                <input type="file" accept="image/*,application/pdf" onChange={handleFileChange} id="file-upload-input" className="hidden-file-input" />
+                <label htmlFor="file-upload-input" className="custom-file-upload">
+                    Choose File
+                </label>
                 <button onClick={handleUpload} disabled={loading}>
                     {loading ? 'Processing...' : 'Upload & OCR'}
                 </button>
+                <textarea className="ocr-result-display" value={ocrResult} readOnly />
             </div>
-
-            {error && <p className="error">{error}</p>}
-
-            {ocrResult && (
-                <div className="results-section">
-                    <h2>OCR Result:</h2>
-                    <pre>{ocrResult}</pre>
-                </div>
-            )}
-        </div>
+        </>
     );
 }
 
