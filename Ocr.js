@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 function Ocr() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [ocrResult, setOcrResult] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const newTextFieldRef = useRef(null); // Ref for the new text field
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -46,6 +47,12 @@ function Ocr() {
         }
     };
 
+    // New handler for the new text field focus
+    const handleNewTextFieldFocus = (e) => {
+      const input = e.target;
+      input.setSelectionRange(input.value.length, input.value.length);
+    };
+
     return (
         <>
             {error && <p className="error">{error}</p>}
@@ -58,7 +65,18 @@ function Ocr() {
                 <button onClick={handleUpload} disabled={loading}>
                     {loading ? 'Processing...' : 'Upload & OCR'}
                 </button>
-                <textarea className="ocr-result-display" value={ocrResult} readOnly />
+                <textarea className="ocr-result-display" value={ocrResult} readOnly style={{ width: '66.66%' }} />
+                {/* New text field - placed beside the OCR textarea */}
+                <div style={{ marginTop: '10px' }}> {/* Added margin for spacing */}
+                  <textarea
+                    id="new-text-field"
+                    className="new-text-field-style"
+                    ref={newTextFieldRef}
+                    onFocus={handleNewTextFieldFocus}
+                    placeholder="Enter text here"
+                    style={{ padding: '10px', borderRadius: '5px', border: '1px solid white', width: '180px', backgroundColor: 'transparent', color: 'white' }}
+                  ></textarea>
+                </div>
             </div>
         </>
     );
